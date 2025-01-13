@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable indent */
 /* eslint-disable prefer-const */
@@ -21,6 +22,14 @@ describe('TP1', () => {
         expect(tp1.sum(1, 2)).toBe(3);
     });
 
+    it('Should return 0 if one of the parameters is not a number', () => {
+        expect(tp1.sum('a', 2)).toBe(0); // Cas déjà couvert
+    });
+
+    it('Should return the sum if both parameters are numbers', () => {
+        expect(tp1.sum(3, 2)).toBe(5); // Ajouté
+    });
+
     it('Should return 0 if the parameter is not a string', () => {
         expect(tp1.my_size_alpha_t(1)).toBe(0);
     });
@@ -31,6 +40,10 @@ describe('TP1', () => {
 
     it('Should handle an empty string', () => {
         expect(tp1.my_size_alpha_t('')).toBe(0);
+    });
+
+    it('Should return 0 if the parameter is not a string', () => {
+        expect(tp1.my_size_alpha_t(123)).toBe(0); // Cas non couvert
     });
 
     it('Should return the alphabet', () => {
@@ -53,6 +66,10 @@ describe('TP1', () => {
         expect(tp1.my_is_posi_neg_t(1)).toBe('POSITIF');
     });
 
+    it('Should return NEGATIVE if the number is 0', () => {
+        expect(tp1.my_is_posi_neg_t(0)).toBe('NEGATIVE'); // Cas non couvert
+    });
+
     it('Should return 0 if the number is less than or equal to 0', () => {
         expect(tp1.fibo(-1)).toBe(0);
     });
@@ -67,6 +84,10 @@ describe('TP1', () => {
         expect(tp1.fibo(4)).toBe(3);
         expect(tp1.fibo(5)).toBe(5);
         expect(tp1.fibo(6)).toBe(8);
+    });
+
+    it('Should return the fibonacci number for a larger n', () => {
+        expect(tp1.fibo(10)).toBe(55); // Cas non couvert
     });
 
     it('Should return the alphabet in reverse', () => {
@@ -119,6 +140,19 @@ describe('TP1', () => {
         expect(tp1.my_display_unicode_t(input)).toBe(expectedOutput);
     });
 
+    it('Should ignore numbers outside valid ranges and not add them to the string', () => {
+        const input = [123, 200, 300]; // Chiffres en dehors des plages valides
+        const expectedOutput = '';
+        expect(tp1.my_display_unicode_t(input)).toBe(expectedOutput); // Cas non couvert
+    });
+
+    it('Should ignore numbers outside valid Unicode ranges', () => {
+        const input = [33, 123, 200]; // Hors plages valides
+        const expectedOutput = ''; // Aucun caractère valide
+        expect(tp1.my_display_unicode_t(input)).toBe(expectedOutput);
+    });
+
+
     it('Should sort an array of numbers in ascending order', () => {
         expect(tp1.quickSort([3, 1, 4, 1, 5, 9])).toEqual([1, 1, 3, 4, 5, 9]);
         expect(tp1.quickSort([])).toEqual([]);
@@ -135,11 +169,29 @@ describe('TP1', () => {
         expect(tp1.quickSort([3.5, 1.1, 4.4, 2.2])).toEqual([1.1, 2.2, 3.5, 4.4]);
     });
 
+    it('Should handle an already sorted array', () => {
+        expect(tp1.quickSort([1, 2, 3, 4])).toEqual([1, 2, 3, 4]); // Cas non couvert
+    });
+
+    it('Should handle an array with identical elements', () => {
+        expect(tp1.quickSort([5, 5, 5, 5])).toEqual([5, 5, 5, 5]); // Cas non couvert
+    });
+
     it('Should handle a single city', () => {
         const distances = { A: { A: 0 } };
         const result = tp1.tspBrutForce(distances);
         expect(result.minDistance).toBe(0);
         expect(result.meilleurePermutation).toEqual(['A']);
+    });
+
+    it('Should handle more than two cities', () => {
+        const distances = {
+            A: { A: 0, B: 10, C: 20 },
+            B: { A: 10, B: 0, C: 25 },
+            C: { A: 20, B: 25, C: 0 }
+        };
+        const result = tp1.tspBrutForce(distances);
+        expect(result.minDistance).toBeGreaterThan(0); // Cas non couvert
     });
 
     it('Should handle asymmetric distances', () => {
@@ -167,7 +219,7 @@ describe('TP1', () => {
 
     it('Should generate all permutations of an array', () => {
         expect(tp1.permuter([1, 2, 3])).toEqual(expect.arrayContaining([
-            [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1],
+            [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]
         ]));
         expect(tp1.permuter([])).toEqual([[]]);
         expect(tp1.permuter([1])).toEqual([[1]]);
@@ -200,6 +252,21 @@ describe('TP1', () => {
 
         expect(tp1.resoudreSudoku(grille)).toBe(true);
         expect(grille).toEqual(solution);
+    });
+
+    it('Should return false if the number already exists in the same row or column', () => {
+        const grille = [
+            [5, 3, 0, 0, 7, 0, 0, 0, 0],
+            [6, 0, 0, 1, 9, 5, 0, 0, 0],
+            [0, 9, 8, 0, 0, 0, 0, 6, 0],
+            [8, 0, 0, 0, 6, 0, 0, 0, 3],
+            [4, 0, 0, 8, 0, 3, 0, 0, 1],
+            [7, 0, 0, 0, 2, 0, 0, 0, 6],
+            [0, 6, 0, 0, 0, 0, 2, 8, 0],
+            [0, 0, 0, 4, 1, 9, 0, 0, 5],
+            [0, 0, 0, 0, 8, 0, 0, 7, 9]
+        ];
+        expect(tp1.estValide(grille, 0, 0, 5)).toBe(false); // Cas non couvert
     });
 
     it('Should return false for an unsolvable grid', () => {
@@ -259,5 +326,21 @@ describe('TP1', () => {
 
         expect(tp1.estValide(grille, 0, 2, 4)).toBe(true); // Valid placement
         expect(tp1.estValide(grille, 0, 2, 3)).toBe(false); // Invalid placement
+    });
+
+    it('Should return false for an unsolvable Sudoku grid', () => {
+        const grille = [
+            [5, 3, 0, 0, 7, 0, 0, 0, 0],
+            [6, 0, 0, 1, 9, 5, 0, 0, 0],
+            [0, 9, 8, 0, 0, 0, 0, 6, 0],
+            [8, 0, 0, 0, 6, 0, 0, 0, 3],
+            [4, 0, 0, 8, 0, 3, 0, 0, 1],
+            [7, 0, 0, 0, 2, 0, 0, 0, 6],
+            [0, 6, 0, 0, 0, 0, 2, 8, 0],
+            [0, 0, 0, 4, 1, 9, 0, 0, 5],
+            [0, 0, 0, 0, 8, 0, 0, 7, 9]
+        ];
+        grille[0][0] = 9; // Provoque une contradiction
+        expect(tp1.resoudreSudoku(grille)).toBe(false);
     });
 });
