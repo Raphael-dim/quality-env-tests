@@ -25,14 +25,10 @@ This document provides a summary of the test coverage for the project, including
 
 ## Test Results
 
-- **Total Tests:** 44
-- **Passed:** 44
+- **Total Tests:** 56
+- **Passed:** 56
 - **Failed:** 0
 - **Snapshots:** 0
-- **Time Taken:** 3.206s
+- **Time Taken:** 4.897s
 
 ---
-
-## Conclusion
-
-All test suites passed successfully, with full test coverage across most files. The uncovered lines in `tchat.class.js` (line 36) and `tp1.class.js` (line 20) should be reviewed, but overall, the test coverage is excellent.
